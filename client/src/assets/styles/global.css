@@ -1,0 +1,88 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Brand Colors */
+    --color-lilac: #C8A2C8;
+    --color-gold: #D4AF37;
+    --color-white: #FFFFFF;
+    --color-black: #333333;
+    --color-gray: #F5F5F5;
+
+    /* Typography */
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--color-black);
+    background-color: var(--color-white);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Utility classes */
+.text-center {
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--color-lilac);
+    color: var(--color-white);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #b48fb4;
+    /* Darker lilac */
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-lilac);
+    border: 2px solid var(--color-lilac);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-lilac);
+    color: var(--color-white);
+}
+
+.section {
+    padding: 60px 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--color-lilac);
+    text-align: center;
+}
