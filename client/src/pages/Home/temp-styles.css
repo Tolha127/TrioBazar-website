@@ -1,0 +1,28 @@
+/* Styles for the product action button */
+.product-action {
+    margin-top: 15px;
+    text-align: center;
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.btn-view-details {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--color-gold), #d4af37);
+    color: var(--color-white);
+    border-radius: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(var(--color-gold-rgb), 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-view-details:hover {
+    background: linear-gradient(135deg, #d4af37, var(--color-gold));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(var(--color-gold-rgb), 0.4);
+}

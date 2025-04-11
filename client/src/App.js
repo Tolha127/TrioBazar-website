@@ -2,17 +2,18 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Products from './pages/Products';
-import Testimonials from './pages/Testimonials';
+import HomePage from './pages/Home/index.js';
+import AboutPage from './pages/About';
+import ProductsPage from './pages/Products/index.js';
+import ProductDetail from './pages/Products/ProductDetail';
 import Contact from './pages/Contact';
-import './assets/styles/global.css';
 import AdminLogin from './pages/Admin/Login';
 import AdminDashboard from './pages/Admin/Dashboard';
 import ProductManager from './pages/Admin/ProductManager';
 import PrivateRoute from './components/common/PrivateRoute'; 
 import { ProductProvider } from './context/ProductContext';
+import './App.css';
+import './assets/styles/global.css';
 
 function App() {
   return (
@@ -22,13 +23,13 @@ function App() {
           <Header />
           <main className="main-content">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:productId" element={<ProductDetail />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/*" element={<PrivateRoute />}>
+              <Route path="/admin" element={<PrivateRoute />}>
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="products" element={<ProductManager />} />
               </Route>

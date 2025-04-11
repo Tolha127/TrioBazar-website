@@ -49,6 +49,138 @@
   background-color: #e9e9e9;
 }
 
+/* WhatsApp Enquiry Button Styles */
+.whatsapp-enquiry {
+  display: inline-block;
+  background-color: #25D366;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.whatsapp-enquiry:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+}
+
+.whatsapp-icon {
+  font-size: 1.2em;
+}
+
+/* Product Detail Page Styles */
+.product-detail-page {
+  padding-bottom: 60px;
+}
+
+.product-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .product-detail-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-detail-image {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-detail-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.product-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.product-detail-info h2 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  color: var(--color-dark);
+}
+
+.product-detail-info .product-category {
+  color: #777;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.product-detail-info .product-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  margin-bottom: 20px;
+}
+
+.product-description {
+  margin-top: 15px;
+}
+
+.product-description h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--color-dark);
+}
+
+.product-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.product-not-found {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.product-not-found h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.product-not-found p {
+  margin-bottom: 20px;
+}
+
 .filter-buttons button.active {
   background-color: #4a90e2;
   color: white;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../context/ProductContext';
+import StarRating from '../../components/common/StarRating';
 import './Home.css';
 
 const Home = () => {
@@ -10,12 +11,14 @@ const Home = () => {
   const featuredProducts = products.slice(0, 3);
   
   return (
-    <div className="home-page">
-      {/* Hero Section */}
+    <div className="home-page">      {/* Hero Section */}
       <section className="hero-section">
         <div className="container">
           <div className="hero-content">
-            <h1>Elegant Islamic Clothing</h1>
+            <div className="business-name">
+              <h1 className="triobazaar-title">TrioBazaar</h1>
+            </div>
+            <h2 className="tagline">Elegant Islamic Clothing</h2>
             <p>Custom-made apparel combining tradition with modern style</p>
             <div className="hero-buttons">
               <Link to="/products" className="btn btn-primary">View Collections</Link>
@@ -30,24 +33,29 @@ const Home = () => {
         <div className="container">
           <h2 className="section-title">Featured Collections</h2>
           <div className="products-grid">
-            {featuredProducts.length > 0 ? (
-              featuredProducts.map(product => (
-                <div className="product-card" key={product.id}>
-                  <div className="product-image">
-                    <img 
-                      src={product.image === 'placeholder.jpg' ? 
-                        'https://via.placeholder.com/300x300?text=Islamic+Clothing' : product.image} 
-                      alt={product.name}
-                    />
-                    <div className="product-overlay">
-                      <Link to="/products" className="view-product">View Details</Link>
+            {featuredProducts.length > 0 ? (              featuredProducts.map(product => (                
+                <div className="product-card temu-style" key={product.id}>
+                  <Link to={`/products/${product.id}`} className="product-link">
+                    <div className="product-image">                    
+                      <img 
+                        src={product.image === 'placeholder.jpg' ? 
+                          'https://via.placeholder.com/300x300?text=Islamic+Clothing' : product.image} 
+                        alt={product.name}
+                      />
                     </div>
-                  </div>
-                  <div className="product-info">
-                    <h3>{product.name}</h3>
-                    <p className="product-category">{product.category}</p>
-                    {product.price && <p className="product-price">{product.price}</p>}
-                  </div>
+                    <div className="product-info">
+                      <h3 className="product-name">{product.name}</h3>
+                      {product.price && <p className="product-price">{product.price}</p>}                      <p className="product-category">{product.category}</p>
+                      <div className="product-meta">
+                        <StarRating rating={product.averageRating} size="small" />
+                        {product.numReviews > 0 ? (
+                          <span className="product-sold">{product.numReviews} {product.numReviews === 1 ? 'Review' : 'Reviews'}</span>
+                        ) : (
+                          <span className="product-sold">Hot Item</span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               ))
             ) : (
@@ -72,9 +80,12 @@ const Home = () => {
               <p>Founded by three siblings with a passion for modest fashion, TrioBazaar has been creating custom wears clothing for over 3 years.</p>
               <p>We value modesty, quality craftsmanship, and customer satisfaction in every piece we create.</p>
               <a href="/about" className="btn btn-secondary">Learn More</a>
-            </div>
-            <div className="about-image placeholder">
-              {/* Image will be added later */}
+            </div>            <div className="about-image">
+              <img 
+                src={require("../../assets/images/triobazaar-logo.png")}
+                alt="TrioBazaar Modest Fashion"
+                className="about-img"
+              />
             </div>
           </div>
         </div>
