@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import StarRating from './common/StarRating';
+import './Products.css';
 
 function Products() {
   const { products } = useProducts();

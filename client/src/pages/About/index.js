@@ -40,7 +40,7 @@ function About() {
         
         <section className="about-section">
           <h2>Our Mission</h2>
-          <p>We strive to provide exceptional service and products to our customers...</p>
+          <p>We are dedicated to designing exceptional, timeless attire that transcends age and size, empowering women to embrace their unique beauty and confidence. Our commitment is to deliver clothing that fits flawlessly, celebrates individuality, and enhances every woman’s sense of grace, elegance, and strength, allowing her to shine in her own way.</p>
         </section>
         
         {/* Testimonials Section (Merged from Testimonials page) */}

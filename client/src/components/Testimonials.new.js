@@ -1,7 +1,8 @@
 import React from 'react';
 import './Testimonials.css';
 
-function Testimonials() {  const testimonials = [
+function Testimonials() {
+  const testimonials = [
     {
       text: "The attention to detail is remarkable. My suit fits perfectly and the quality of the fabric is exceptional. I've never had clothing that fits this well before.",
       name: "Michael Johnson",
@@ -34,7 +35,8 @@ function Testimonials() {  const testimonials = [
               <div className="quote-icon">"</div>
             </div>
           ))}
-        </div>      </div>
+        </div>
+      </div>
     </section>
   );
 }
