@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>TrioBazar</h3>
+            <h3>TrioBazaar</h3>
             <p>Specializing in modest clothing with a focus on quality and customer satisfaction.</p>
           </div>
           
@@ -27,7 +27,7 @@ const Footer = () => {
           
           <div className="footer-section">
             <h3>Contact Us</h3>
-            <p>Email: info@triobazar.com</p>
+            <p>Email: info@triobazaar.com</p>
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail" style={{ width: '20px', height: '20px' }} />
             <p>WhatsApp: +234 9127813223</p>
             <div className="social-icons">
@@ -38,7 +38,7 @@ const Footer = () => {
         </div>
         
         <div className="footer-bottom">
-          <p>&copy;2025 TrioBazar. All rights reserved.</p>
+          <p>&copy;2025 TrioBazaar. All rights reserved.</p>
         </div>
       </div>
     </footer>

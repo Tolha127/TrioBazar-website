@@ -1,7 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useProducts } from '../../context/ProductContext';
 import './Home.css';
 
 const Home = () => {
+  const { products } = useProducts();
+  
+  // Get up to 3 featured products (in a real app, you might have a 'featured' flag)
+  const featuredProducts = products.slice(0, 3);
+  
   return (
     <div className="home-page">
       {/* Hero Section */}
@@ -11,8 +18,8 @@ const Home = () => {
             <h1>Elegant Islamic Clothing</h1>
             <p>Custom-made apparel combining tradition with modern style</p>
             <div className="hero-buttons">
-              <a href="/products" className="btn btn-primary">View Collections</a>
-              <a href="/contact" className="btn btn-secondary">Contact Us</a>
+              <Link to="/products" className="btn btn-primary">View Collections</Link>
+              <Link to="/contact" className="btn btn-secondary btn-gold">Contact Us</Link>
             </div>
           </div>
         </div>
@@ -23,10 +30,36 @@ const Home = () => {
         <div className="container">
           <h2 className="section-title">Featured Collections</h2>
           <div className="products-grid">
-            {/* This will be populated with actual products later */}
-            <div className="product-card placeholder"></div>
-            <div className="product-card placeholder"></div>
-            <div className="product-card placeholder"></div>
+            {featuredProducts.length > 0 ? (
+              featuredProducts.map(product => (
+                <div className="product-card" key={product.id}>
+                  <div className="product-image">
+                    <img 
+                      src={product.image === 'placeholder.jpg' ? 
+                        'https://via.placeholder.com/300x300?text=Islamic+Clothing' : product.image} 
+                      alt={product.name}
+                    />
+                    <div className="product-overlay">
+                      <Link to="/products" className="view-product">View Details</Link>
+                    </div>
+                  </div>
+                  <div className="product-info">
+                    <h3>{product.name}</h3>
+                    <p className="product-category">{product.category}</p>
+                    {product.price && <p className="product-price">{product.price}</p>}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="product-card placeholder gold-accent"></div>
+                <div className="product-card placeholder lilac-accent"></div>
+                <div className="product-card placeholder gold-accent"></div>
+              </>
+            )}
+          </div>
+          <div className="view-all-container">
+            <Link to="/products" className="btn btn-secondary">View All Collections</Link>
           </div>
         </div>
       </section>
@@ -35,9 +68,8 @@ const Home = () => {
       <section className="section about-preview">
         <div className="container">
           <div className="about-content">
-            <div className="about-text">
-              <h2>About TrioBazar</h2>
-              <p>Founded by three siblings with a passion for modest fashion, TrioBazar has been creating custom wears clothing for over 3 years.</p>
+            <div className="about-text">              <h2>About TrioBazaar</h2>
+              <p>Founded by three siblings with a passion for modest fashion, TrioBazaar has been creating custom wears clothing for over 3 years.</p>
               <p>We value modesty, quality craftsmanship, and customer satisfaction in every piece we create.</p>
               <a href="/about" className="btn btn-secondary">Learn More</a>
             </div>
