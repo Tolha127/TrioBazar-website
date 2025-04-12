@@ -21,12 +21,11 @@ const Home = () => {
       {/* About Preview Section */}
       <section className="section about-preview">
         <div className="container">
-          <div className="about-content">
-            <div className="about-text">              <h2>About TrioBazaar</h2>
-              <p>Founded by three siblings with a passion for modest fashion, TrioBazaar has been creating custom wears clothing for over 3 years.</p>
-              <p>We value modesty, quality craftsmanship, and customer satisfaction in every piece we create.</p>
+          <div className="about-content">          <div className="about-text">              <h2>About TrioBazaar</h2>
+              <p>Founded by three siblings with a passion for contemporary fashion, TrioBazaar has been creating custom tailored clothing for over 3 years.</p>
+              <p>We value elegance, quality craftsmanship, and customer satisfaction in every piece we create.</p>
               <a href="/about" className="btn btn-secondary">Learn More</a>
-            </div>            <div className="about-image">
+            </div><div className="about-image">
               <img 
                 src={require("../../assets/images/triobazaar-logo.png")}
                 alt="TrioBazaar Modest Fashion"

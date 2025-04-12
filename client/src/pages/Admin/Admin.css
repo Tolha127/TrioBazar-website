@@ -260,7 +260,8 @@
   gap: 10px;
 }
 
-.edit-btn, .delete-btn {
+.edit-btn,
+.delete-btn {
   background: none;
   border: none;
   font-size: 16px;
@@ -276,6 +277,26 @@
   color: #e57373;
 }
 
+.testimonial-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-text-cell {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .admin-header {
@@ -283,7 +304,7 @@
     align-items: flex-start;
     gap: 15px;
   }
-  
+
   .form-grid {
     grid-template-columns: 1fr;
   }

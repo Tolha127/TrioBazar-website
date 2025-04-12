@@ -31,15 +31,13 @@
 }
 
 .hero-content h1 {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.2;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  color: var(--color-gold);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
 }
 
 .hero-content p {

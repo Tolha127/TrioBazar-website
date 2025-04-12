@@ -1,31 +1,9 @@
 import React from 'react';
+import { useTestimonials } from '../../context/TestimonialContext';
 import './About.css';
 
 function About() {
-  // Sample testimonials data - in a real app, this could come from a database or API
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah Ahmed",
-      location: "Lagos, Nigeria",
-      text: "The abaya I purchased from TrioBazaar exceeded my expectations. The quality of fabric and attention to detail is outstanding!",
-      rating: 5
-    },
-    {
-      id: 2,
-      name: "Mohammed Ibrahim",
-      location: "Abuja, Nigeria",
-      text: "I ordered a custom thoub for my wedding and it arrived on time and fit perfectly. The craftsmanship is excellent.",
-      rating: 5
-    },
-    {
-      id: 3,
-      name: "Fatima Yusuf",
-      location: "Kano, Nigeria",
-      text: "Very satisfied with my purchase. The hijab material is premium quality and the embroidery is beautiful.",
-      rating: 4
-    }
-  ];
+  const { testimonials, getAvatarByGender } = useTestimonials();
 
   return (
     <div className="about-page">
@@ -43,25 +21,29 @@ function About() {
           <p>We are dedicated to designing exceptional, timeless attire that transcends age and size, empowering women to embrace their unique beauty and confidence. Our commitment is to deliver clothing that fits flawlessly, celebrates individuality, and enhances every woman’s sense of grace, elegance, and strength, allowing her to shine in her own way.</p>
         </section>
         
-        {/* Testimonials Section (Merged from Testimonials page) */}
-        <section className="about-section testimonials-section">
+        {/* Testimonials Section (Merged from Testimonials page) */}        <section className="about-section testimonials-section">
           <h2>Customer Testimonials</h2>
           <div className="testimonials-container">
             {testimonials.length > 0 ? (
-              testimonials.map(testimonial => (
-                <div className="testimonial-card" key={testimonial.id}>
-                  <div className="testimonial-rating">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className={i < testimonial.rating ? "star filled" : "star"}>★</span>
-                    ))}
-                  </div>
+              testimonials.map((testimonial, index) => (
+                <div className="testimonial-card" key={testimonial.id || index}>
                   <p className="testimonial-text">"{testimonial.text}"</p>
-                  <p className="testimonial-author">- {testimonial.name}</p>
-                  <p className="testimonial-location">{testimonial.location}</p>
+                  <div className="testimonial-author">                    <img 
+                      src={getAvatarByGender(testimonial.gender)} 
+                      alt={`${testimonial.name} avatar`} 
+                      className="author-avatar" 
+                    />
+                    <div>
+                      <div className="author-name">{testimonial.name}</div>
+                      <div className="author-role">{testimonial.role}</div>
+                    </div>
+                  </div>
                 </div>
               ))
             ) : (
-              <p>Testimonials coming soon...</p>
+              <div className="no-testimonials">
+                <p>Be the first to leave a testimonial!</p>
+              </div>
             )}
           </div>
         </section>

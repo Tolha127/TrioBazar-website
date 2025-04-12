@@ -94,10 +94,9 @@ const Contact = () => {
                 
                 <div className="contact-method whatsapp-contact">
                   <FaWhatsapp className="contact-icon" />
-                  <div>
-                    <h3>WhatsApp</h3>
-                    <p>+123-456-7890</p>
-                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
+                  <div>                    <h3>WhatsApp</h3>
+                    <p>+234 916 710 8795</p>
+                    <a href="https://wa.me/2349167108795" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
                   </div>
                 </div>
               </div>

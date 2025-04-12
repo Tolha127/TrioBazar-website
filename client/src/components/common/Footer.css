@@ -1,9 +1,9 @@
 
 /* Footer */
 .footer {
-  background-color: #32292f;
+  background-color: var(--color-black);
   padding: 60px 40px 30px;
-  color: #fff;
+  color: var(--color-white);
 }
 
 .footer-grid {
@@ -18,11 +18,17 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: var(--color-gold);
+}
+
+.footer-logo span {
+  color: var(--color-lilac);
 }
 
 .footer-about {
   font-size: 14px;
   line-height: 1.6;
+  color: var(--color-gray);
 }
 
 .footer-heading {
@@ -38,7 +44,7 @@
   left: 0;
   width: 40px;
   height: 2px;
-  background-color: #a35638;
+  background-color: var(--color-gold);
 }
 
 .footer-links {
@@ -50,13 +56,13 @@
 }
 
 .footer-link a {
-  color: #e0dad0;
+  color: var(--color-gray);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .footer-link a:hover {
-  color: #a35638;
+  color: var(--color-gold);
 }
 
 .footer-social {
@@ -69,15 +75,16 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #5c5658;
+  background-color: rgba(var(--color-lilac-rgb), 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
+  color: var(--color-white);
 }
 
 .social-icon:hover {
-  background-color: #a35638;
+  background-color: var(--color-gold);
 }
 
 .footer-contact-item {
@@ -88,7 +95,7 @@
 
 .contact-icon {
   margin-right: 10px;
-  color: #a35638;
+  color: var(--color-gold);
 }
 
 .footer-bottom {

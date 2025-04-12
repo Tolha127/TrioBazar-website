@@ -2,9 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaBox, FaEdit, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
 import AdminLayout from '../../components/Layout/AdminLayout';
+import { useViews } from '../../context/ViewsContext';
+import { useProducts } from '../../context/ProductContext';
 import './Admin.css';
 
 const AdminDashboard = () => {
+  const { products } = useProducts();
+  const { getTotalViews } = useViews();
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     window.location.href = '/admin/login';
@@ -19,31 +24,30 @@ const AdminDashboard = () => {
             <FaSignOutAlt /> Logout
           </button>
         </div>
-        
+
         <div className="admin-stats">
           <div className="stat-card">
             <div className="stat-icon">
               <FaBox />
-            </div>
-            <div className="stat-details">
+            </div>            <div className="stat-details">
               <h3>Total Products</h3>
-              <p className="stat-number">24</p>
+              <p className="stat-number">{products.length}</p>
             </div>
           </div>
-          
+
           <div className="stat-card">
             <div className="stat-icon">
               <FaChartLine />
             </div>
             <div className="stat-details">
               <h3>Page Views</h3>
-              <p className="stat-number">1,245</p>
+              <p className="stat-number">{getTotalViews()}</p>
             </div>
           </div>
-          
+
           {/* Add more stat cards as needed */}
         </div>
-        
+
         <div className="admin-quick-actions">
           <h2>Quick Actions</h2>
           <div className="actions-grid">
@@ -54,7 +58,14 @@ const AdminDashboard = () => {
               <h3>Add New Product</h3>
               <p>Upload and manage new products</p>
             </Link>
-            
+            <Link to="/admin/testimonials" className="action-card">
+              <div className="action-icon">
+                <FaEdit />
+              </div>
+              <h3>Manage Testimonials</h3>
+              <p>Add and edit customer reviews</p>
+            </Link>
+
             <Link to="/admin/content" className="action-card">
               <div className="action-icon">
                 <FaEdit />
@@ -62,7 +73,7 @@ const AdminDashboard = () => {
               <h3>Edit Content</h3>
               <p>Update website content and information</p>
             </Link>
-            
+
             {/* Add more action cards as needed */}
           </div>
         </div>
