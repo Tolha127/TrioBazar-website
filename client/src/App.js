@@ -8,13 +8,15 @@ import ProductsPage from './pages/Products/index.js';
 import ProductDetail from './pages/Products/ProductDetail';
 import Contact from './pages/Contact';
 import AdminLogin from './pages/Admin/Login';
-import AdminDashboard from './pages/Admin/Dashboard';
-import ProductManager from './pages/Admin/ProductManager';
-import TestimonialManager from './pages/Admin/TestimonialManager';
-import PrivateRoute from './components/common/PrivateRoute'; 
 import { ProductProvider } from './context/ProductContext';
 import { TestimonialProvider } from './context/TestimonialContext';
 import { ViewsProvider } from './context/ViewsContext';
+import { MessagesProvider } from './context/MessagesContext';
+import PrivateRoute from './components/common/PrivateRoute';
+import AdminDashboard from './pages/Admin/Dashboard';
+import ProductManager from './pages/Admin/ProductManager';
+import TestimonialManager from './pages/Admin/TestimonialManager';
+import MessagesManager from './pages/Admin/MessagesManager';
 import './App.css';
 import './assets/styles/global.css';
 
@@ -22,9 +24,10 @@ function App() {
   return (
     <ProductProvider>
       <TestimonialProvider>
-        <Router>
-          <ViewsProvider>
-            <div className="app">
+        <MessagesProvider>
+          <Router>
+            <ViewsProvider>
+              <div className="app">
               <Header />
               <main className="main-content">
                 <Routes>
@@ -38,6 +41,7 @@ function App() {
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="products" element={<ProductManager />} />
                     <Route path="testimonials" element={<TestimonialManager />} />
+                    <Route path="messages" element={<MessagesManager />} />
                   </Route>
                 </Routes>
               </main>
@@ -45,6 +49,7 @@ function App() {
             </div>
           </ViewsProvider>
         </Router>
+        </MessagesProvider>
       </TestimonialProvider>
     </ProductProvider>
   );

@@ -75,7 +75,7 @@ const ProductDetail = () => {
                   <p>{product.colors}</p>
                 </div>
               )}                <div className="product-actions">                <a 
-                  href={`https://wa.me/2348120254838?text=Hello%20TrioBazaar,%20I'm%20interested%20in%20your%20${product.name}%20(Product%20Code:%20${product.code}).%20Please%20provide%20more%20information.`}
+                  href={`https://wa.me/2349167108795?text=Hello%20TrioBazaar,%20I'm%20interested%20in%20your%20${product.name}%20(Product%20Code:%20${product.code}).%20Please%20provide%20more%20information.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-whatsapp"

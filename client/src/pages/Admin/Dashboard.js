@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaBox, FaEdit, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
+import { FaBox, FaEdit, FaSignOutAlt, FaChartLine, FaEnvelope } from 'react-icons/fa';
 import AdminLayout from '../../components/Layout/AdminLayout';
 import { useViews } from '../../context/ViewsContext';
 import { useProducts } from '../../context/ProductContext';
@@ -57,13 +57,20 @@ const AdminDashboard = () => {
               </div>
               <h3>Add New Product</h3>
               <p>Upload and manage new products</p>
-            </Link>
-            <Link to="/admin/testimonials" className="action-card">
+            </Link>            <Link to="/admin/testimonials" className="action-card">
               <div className="action-icon">
                 <FaEdit />
               </div>
               <h3>Manage Testimonials</h3>
               <p>Add and edit customer reviews</p>
+            </Link>
+
+            <Link to="/admin/messages" className="action-card">
+              <div className="action-icon">
+                <FaEnvelope />
+              </div>
+              <h3>Messages</h3>
+              <p>View customer inquiries</p>
             </Link>
 
             <Link to="/admin/content" className="action-card">

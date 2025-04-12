@@ -17,11 +17,9 @@ const Footer = () => {
             </a>
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon">
               <i className="fab fa-linkedin-in"></i>
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon">
+            </a>            <a href="https://www.instagram.com/trio_bazaar_wears?igsh=NXpnODg0cnEzMDRm" target="_blank" rel="noopener noreferrer" className="social-icon">
               <i className="fab fa-instagram"></i>
-            </a>
-            <a href="https://wa.me/2349167108795" target="_blank" rel="noopener noreferrer" className="social-icon">
+            </a>            <a href="https://wa.me/2349167108795?text=Hello%20TrioBazar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="social-icon">
               <i className="fab fa-whatsapp"></i>
             </a>
           </div>

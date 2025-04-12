@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { FaWhatsapp, FaInstagram, FaFacebook, FaEnvelope } from 'react-icons/fa';
+import { useMessages } from '../../context/MessagesContext';
 import './Contact.css';
 
 const Contact = () => {
+  const { addMessage } = useMessages();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
+  const [submitStatus, setSubmitStatus] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -18,8 +21,10 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Form submission logic will go here
-    console.log('Form submitted:', formData);
+    addMessage(formData);
+    setSubmitStatus('success');
+    setFormData({ name: '', email: '', message: '' });
+    setTimeout(() => setSubmitStatus(''), 3000);
   };
 
   return (
@@ -36,7 +41,11 @@ const Contact = () => {
           <div className="contact-grid">
             {/* Contact Form */}
             <div className="contact-form-container">
-              <h2>Send Us a Message</h2>
+              <h2>Send Us a Message</h2>              {submitStatus === 'success' && (
+                <div className="success-message">
+                  Message sent successfully! We'll get back to you soon.
+                </div>
+              )}
               <form onSubmit={handleSubmit} className="contact-form">
                 <div className="form-group">
                   <label htmlFor="name">Your Name</label>
@@ -96,7 +105,7 @@ const Contact = () => {
                   <FaWhatsapp className="contact-icon" />
                   <div>                    <h3>WhatsApp</h3>
                     <p>+234 916 710 8795</p>
-                    <a href="https://wa.me/2349167108795" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
+                    <a href="https://wa.me/2349167108795?text=Hello%20TrioBazar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
                   </div>
                 </div>
               </div>
