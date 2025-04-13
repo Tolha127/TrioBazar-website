@@ -91,13 +91,12 @@ const ProductManager = () => {
     
     setShowAddForm(false);
   };
-  
-  const handleDeleteProduct = (id) => {
+    const handleDeleteProduct = (id) => {
     deleteProduct(id);
   };
   
   const handleEditProduct = (product) => {
-    setEditingProductId(product.id);
+    setEditingProductId(product._id);
     setNewProduct({
       name: product.name,
       code: product.code,

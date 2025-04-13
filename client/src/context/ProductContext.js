@@ -23,16 +23,32 @@ export const ProductProvider = ({ children }) => {
       setError(err.message);
       setLoading(false);
     }
-  };
-  // Add a new product
+  };  // Add a new product
   const addProduct = async (product) => {
     try {
       const token = localStorage.getItem('adminToken');
       
-      // Check if product contains an actual File object for the image
+      // Check if token exists
+      if (!token) {
+        console.error('Authentication token not found. Please log in again.');
+        throw new Error('No authentication token found. Please log in.');
+      }
+        // Check if product contains an actual File object for the image
       if (product.image instanceof File) {
         // Use FormData for image upload
         const formData = new FormData();
+        
+        // Make sure all required fields are present and valid
+        // The server requires name, code, and category to be non-empty
+        if (!product.name || product.name.length < 3) {
+          throw new Error('Product name is required and must be at least 3 characters');
+        }
+        if (!product.code || product.code.length < 2) {
+          throw new Error('Product code is required and must be at least 2 characters');
+        }
+        if (!product.category) {
+          throw new Error('Product category is required');
+        }
         
         // Add all product fields to the FormData
         for (const key in product) {

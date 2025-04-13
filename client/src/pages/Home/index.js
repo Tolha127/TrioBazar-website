@@ -41,7 +41,7 @@ const Home = () => {
         <div className="container">
           <h2>Ready to order your custom clothing?</h2>
           <p>Contact us via WhatsApp to discuss your requirements and place an order.</p>
-          <a href="https://wa.me/2349167108795?text=Hello%20TrioBazar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="btn btn-primary">Chat on WhatsApp</a>
+          <a href="https://wa.me/2349167108795?text=Hello%20TrioBazaar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="btn btn-primary">Chat on WhatsApp</a>
         </div>
       </section>
     </div>

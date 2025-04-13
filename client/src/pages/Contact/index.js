@@ -105,7 +105,7 @@ const Contact = () => {
                   <FaWhatsapp className="contact-icon" />
                   <div>                    <h3>WhatsApp</h3>
                     <p>+234 916 710 8795</p>
-                    <a href="https://wa.me/2349167108795?text=Hello%20TrioBazar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
+                    <a href="https://wa.me/2349167108795?text=Hello%20TrioBazaar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
                   </div>
                 </div>
               </div>

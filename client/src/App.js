@@ -37,6 +37,8 @@ function App() {
                   <Route path="/products/:productId" element={<ProductDetail />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/admin/login" element={<AdminLogin />} />
+                  {/* Added explicit route for /admin to redirect to login */}
+                  <Route path="/admin" element={<AdminLogin />} />
                   <Route path="/admin" element={<PrivateRoute />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="products" element={<ProductManager />} />

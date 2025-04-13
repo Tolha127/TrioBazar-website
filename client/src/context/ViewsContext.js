@@ -5,9 +5,8 @@ const ViewsContext = createContext();
 
 export const useViews = () => useContext(ViewsContext);
 
-export const ViewsProvider = ({ children }) => {
-  const [pageViews, setPageViews] = useState(() => {
-    const savedViews = localStorage.getItem('trioBazarPageViews');
+export const ViewsProvider = ({ children }) => {  const [pageViews, setPageViews] = useState(() => {
+    const savedViews = localStorage.getItem('trioBazaarPageViews');
     return savedViews ? JSON.parse(savedViews) : {};
   });
 
@@ -16,12 +15,11 @@ export const ViewsProvider = ({ children }) => {
   useEffect(() => {
     // Increment page views for the current path
     const path = location.pathname;
-    setPageViews(prev => {
-      const newViews = {
+    setPageViews(prev => {      const newViews = {
         ...prev,
         [path]: (prev[path] || 0) + 1
       };
-      localStorage.setItem('trioBazarPageViews', JSON.stringify(newViews));
+      localStorage.setItem('trioBazaarPageViews', JSON.stringify(newViews));
       return newViews;
     });
   }, [location.pathname]);

@@ -70,17 +70,27 @@ app.get('/api/test', (req, res) => {
 });
 
 // MongoDB Connection with improved pooling and reconnection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/triobazar', {
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/trioBazaar';
+
+// Add more detailed connection logging
+console.log('Attempting to connect to MongoDB at:', MONGODB_URI);
+
+// Enhanced connection with better timeout settings and debug mode
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  socketTimeoutMS: 30000,
+  socketTimeoutMS: 60000, // Increased timeout for operations
+  connectTimeoutMS: 30000, // Specific timeout for initial connection
   keepAlive: true,
   maxPoolSize: 50, // Maximum number of sockets Mongoose keeps open
-  serverSelectionTimeoutMS: 5000, // Timeout for server selection
+  serverSelectionTimeoutMS: 20000, // Further increased timeout for server selection
   retryWrites: true
 })
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log('MongoDB Connection Error:', err));
+.then(() => console.log('MongoDB Connected Successfully'))
+.catch(err => {
+  console.log('MongoDB Connection Error:', err);
+  console.log('Please ensure your MongoDB service is running properly');
+});
 
 // Add connection event handlers
 mongoose.connection.on('error', (err) => {

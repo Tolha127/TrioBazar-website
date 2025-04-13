@@ -13,24 +13,33 @@ const AdminLogin = () => {
       [e.target.name]: e.target.value
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
-    // In a real application, you would verify with your backend
-    // This is just a simple example
     try {
-      // Simulate API call
-      if (credentials.username === 'admin' && credentials.password === 'password') {
-        // Store token in localStorage
-        localStorage.setItem('adminToken', 'example-token');
+      // Make a real API call to the backend
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Store the real JWT token from the backend
+        localStorage.setItem('adminToken', data.token);
         navigate('/admin/dashboard');
       } else {
-        setError('Invalid credentials');
+        // Show error message from the server
+        setError(data.message || 'Invalid credentials');
       }
     } catch (err) {
       setError('Login failed. Please try again.');
+      console.error('Login error:', err);
     }
   };
 
