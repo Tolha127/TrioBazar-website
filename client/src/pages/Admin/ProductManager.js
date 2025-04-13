@@ -64,15 +64,14 @@ const ProductManager = () => {
     
     // Auto-generate product code if not provided
     const productCode = newProduct.code || generateProductCode(newProduct.category);
-    
-    // Create product with auto-generated fields
+      // Create product with auto-generated fields
     addProduct({
       name: newProduct.name,
       code: productCode,
       category: newProduct.category,
       description: newProduct.description,
       price: newProduct.price,
-      image: newProduct.image ? URL.createObjectURL(newProduct.image) : 'placeholder.jpg',
+      image: newProduct.image || 'placeholder.jpg', // Pass the actual File object, not a URL
       createdAt: new Date().toISOString(),
       ratings: [],
       averageRating: 0,

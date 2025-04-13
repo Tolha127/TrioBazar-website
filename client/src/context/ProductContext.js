@@ -24,20 +24,54 @@ export const ProductProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
   // Add a new product
   const addProduct = async (product) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token
+      
+      // Check if product contains an actual File object for the image
+      if (product.image instanceof File) {
+        // Use FormData for image upload
+        const formData = new FormData();
+        
+        // Add all product fields to the FormData
+        for (const key in product) {
+          if (key === 'image') {
+            formData.append('image', product.image);
+          } else {
+            formData.append(key, product[key]);
+          }
         }
-      };
-      const response = await api.post('/products', product, config);
-      setProducts([...products, response.data]);
-      return response.data;
+        
+        const config = {
+          headers: {
+            'x-auth-token': token,
+            // Don't set Content-Type here, it will be set automatically with boundary
+          }
+        };
+        
+        // Use the with-image endpoint for FormData/image upload
+        const response = await api.post('/products/with-image', formData, config);
+        setProducts([...products, response.data]);
+        return response.data;
+      } else {
+        // No actual file, use regular JSON endpoint
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token
+          }
+        };
+        
+        // Remove any URL.createObjectURL references that can't be processed by the server
+        if (typeof product.image === 'string' && product.image.startsWith('blob:')) {
+          product.image = 'placeholder.jpg';
+        }
+        
+        const response = await api.post('/products', product, config);
+        setProducts([...products, response.data]);
+        return response.data;
+      }
     } catch (err) {
       setError(err.message);
       throw err;
