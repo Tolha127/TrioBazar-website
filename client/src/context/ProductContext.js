@@ -13,17 +13,28 @@ export const ProductProvider = ({ children }) => {
   // Fetch products from API
   useEffect(() => {
     fetchProducts();
-  }, []);
-  const fetchProducts = async () => {
+  }, []);  const fetchProducts = async () => {
     try {
       const response = await api.get('/products');
-      setProducts(response.data);
+      // Process image paths to ensure they're correctly formatted
+      const processedProducts = response.data.map(product => {
+        // Make sure image paths are properly formatted
+        if (product.image && typeof product.image === 'string') {
+          // If the path doesn't include the full URL and starts with /uploads
+          if (product.image.startsWith('/uploads')) {
+            // Prepend the server URL (assuming it's at localhost:5000)
+            product.image = `http://localhost:5000${product.image}`;
+          }
+        }
+        return product;
+      });
+      setProducts(processedProducts);
       setLoading(false);
     } catch (err) {
       setError(err.message);
       setLoading(false);
     }
-  };  // Add a new product
+  };// Add a new product
   const addProduct = async (product) => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -37,17 +48,22 @@ export const ProductProvider = ({ children }) => {
       if (product.image instanceof File) {
         // Use FormData for image upload
         const formData = new FormData();
-        
-        // Make sure all required fields are present and valid
+          // Make sure all required fields are present and valid
         // The server requires name, code, and category to be non-empty
         if (!product.name || product.name.length < 3) {
           throw new Error('Product name is required and must be at least 3 characters');
         }
-        if (!product.code || product.code.length < 2) {
-          throw new Error('Product code is required and must be at least 2 characters');
-        }
         if (!product.category) {
           throw new Error('Product category is required');
+        }
+        
+        // Generate a unique product code if not provided or if it's too short
+        // This helps prevent duplicate key errors
+        if (!product.code || product.code.length < 5) {
+          // Generate a code with timestamp and random numbers for uniqueness
+          const timestamp = new Date().getTime();
+          const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+          product.code = `${timestamp.toString().slice(-6)}${randomPart}`;
         }
         
         // Add all product fields to the FormData
@@ -65,10 +81,12 @@ export const ProductProvider = ({ children }) => {
             // Don't set Content-Type here, it will be set automatically with boundary
           }
         };
-        
-        // Use the with-image endpoint for FormData/image upload
+          // Use the with-image endpoint for FormData/image upload
         const response = await api.post('/products/with-image', formData, config);
-        setProducts([...products, response.data]);
+        
+        // After successful product addition, fetch all products to ensure everything is in sync
+        await fetchProducts();
+        
         return response.data;
       } else {
         // No actual file, use regular JSON endpoint
@@ -113,20 +131,33 @@ export const ProductProvider = ({ children }) => {
       setError(err.message);
       throw err;
     }
-  };
-
-  // Delete a product
+  };  // Delete a product
   const deleteProduct = async (id) => {
     try {
       const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        console.error('No admin token found. Please log in again.');
+        throw new Error('Authentication required. Please log in.');
+      }
+
+      // Set authorization headers for the delete request
       const config = {
         headers: {
           'x-auth-token': token
         }
       };
-      await api.delete(`/products/${id}`, config);
+      
+      console.log(`Attempting to delete product with ID: ${id}`);
+      // Send the delete request with proper configuration
+      const response = await api.delete(`/products/${id}`, config);
+      console.log('Delete response:', response.data);
+      
+      // Update local state to remove deleted product
       setProducts(products.filter(product => product._id !== id));
+      return true;
     } catch (err) {
+      console.error('Delete product error:', err.response ? err.response.data : err.message);
       setError(err.message);
       throw err;
     }

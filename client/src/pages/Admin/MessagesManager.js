@@ -40,9 +40,8 @@ const MessagesManager = () => {
             </div>
           ) : (
             <div className="messages-list">
-              {messages.map((message) => (
-                <div 
-                  key={message.id} 
+              {messages.map((message) => (                <div 
+                  key={message._id} 
                   className={`message-card ${!message.read ? 'unread' : ''}`}
                 >
                   <div className="message-header">
@@ -61,10 +60,9 @@ const MessagesManager = () => {
                       >
                         <FaCheckCircle /> Mark as Read
                       </button>
-                    )}
-                    <button 
+                    )}                    <button 
                       className="btn btn-danger"
-                      onClick={() => handleDeleteMessage(message.id)}
+                      onClick={() => handleDeleteMessage(message._id)}
                     >
                       <FaTrash /> Delete
                     </button>

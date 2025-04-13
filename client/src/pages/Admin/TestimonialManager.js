@@ -6,9 +6,8 @@ import './Admin.css';
 
 const TestimonialManager = () => {
   const { testimonials, addTestimonial, updateTestimonial, deleteTestimonial } = useTestimonials();
-
   const [formData, setFormData] = useState({
-    id: null,
+    _id: null,
     text: '',
     name: '',
     role: '',
@@ -173,9 +172,8 @@ const TestimonialManager = () => {
                   <th>Testimonial</th>
                   <th>Actions</th>
                 </tr>
-              </thead>
-              <tbody>
-                {testimonials.map((testimonial) => (<tr key={testimonial.id}>
+              </thead>              <tbody>
+                {testimonials.map((testimonial) => (<tr key={testimonial._id}>
                   <td>
                     <div className="testimonial-name-cell">
                       <img
@@ -202,10 +200,9 @@ const TestimonialManager = () => {
                       onClick={() => editTestimonial(testimonial)}
                     >
                       <FaEdit />
-                    </button>
-                    <button
+                    </button>                    <button
                       className="btn-icon delete"
-                      onClick={() => handleDeleteTestimonial(testimonial.id)}
+                      onClick={() => handleDeleteTestimonial(testimonial._id)}
                     >
                       <FaTrash />
                     </button>

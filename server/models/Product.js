@@ -16,14 +16,15 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ['Women', 'Men', 'Children']
-  },
-  description: {
+  },  description: {
     type: String,
-    required: true
+    required: false,
+    default: ''
   },
   price: {
     type: String,
-    required: true
+    required: false,
+    default: '0'
   },
   image: {
     type: String,

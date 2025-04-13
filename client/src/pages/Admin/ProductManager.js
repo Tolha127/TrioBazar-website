@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/Layout/AdminLayout';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 import './Admin.css';
 import { useProducts } from '../../context/ProductContext';
 
 const ProductManager = () => {
   // Use products from context instead of local state
   const { products, addProduct, deleteProduct, updateProduct } = useProducts();
+  const location = useLocation();
   
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editingProductId, setEditingProductId] = useState(null);
+  
+  // Check if we're on the "add product" route and show the form automatically
+  useEffect(() => {
+    if (location.pathname === '/admin/products/add') {
+      setShowAddForm(true);
+    }
+  }, [location.pathname]);
   const [newProduct, setNewProduct] = useState({
     name: '',
     code: '',
@@ -34,12 +43,8 @@ const ProductManager = () => {
       image: e.target.files[0]
     });
   };
-    // Function to auto-generate product code based on category
+  // Function to auto-generate product code based on category
   const generateProductCode = (category) => {
-    // Get existing products in this category
-    const categoryProducts = products.filter(p => p.category === category);
-    const categoryCount = categoryProducts.length + 1;
-    
     // Create category prefix (first 2 letters + first letter of second word if exists)
     let prefix = '';
     const words = category.split(' ');
@@ -52,47 +57,77 @@ const ProductManager = () => {
       prefix = 'PR'; // Default prefix if category is empty
     }
     
-    // Generate sequential number padded with zeros
-    const sequentialNumber = String(categoryCount).padStart(3, '0');
+    // Use timestamp to ensure uniqueness - combine current time and a random number
+    const timestamp = new Date().getTime();
+    const randomPart = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
     
-    return `${prefix}-${sequentialNumber}`;
+    // Combine prefix with timestamp to ensure uniqueness
+    return `${prefix}-${timestamp.toString().slice(-6)}${randomPart}`;
   };
-
-  const handleAddProduct = (e) => {
+  const [error, setError] = useState('');
+  
+  const handleAddProduct = async (e) => {
     e.preventDefault();
-    // In a real app, you'd upload the image and send data to your API
+    setError(''); // Clear any previous errors
     
-    // Auto-generate product code if not provided
-    const productCode = newProduct.code || generateProductCode(newProduct.category);
+    try {
+      // Basic validation
+      if (!newProduct.name || newProduct.name.trim().length < 3) {
+        setError('Product name must be at least 3 characters');
+        return;
+      }
+      
+      if (!newProduct.category) {
+        setError('Category is required');
+        return;
+      }
+      
+      // Auto-generate product code if not provided
+      const productCode = newProduct.code || generateProductCode(newProduct.category);
+      
       // Create product with auto-generated fields
-    addProduct({
-      name: newProduct.name,
-      code: productCode,
-      category: newProduct.category,
-      description: newProduct.description,
-      price: newProduct.price,
-      image: newProduct.image || 'placeholder.jpg', // Pass the actual File object, not a URL
-      createdAt: new Date().toISOString(),
-      ratings: [],
-      averageRating: 0,
-      numReviews: 0,
-      inStock: true,
-      featured: false
-    });
-    
-    setNewProduct({
-      name: '',
-      code: '',
-      category: '',
-      description: '',
-      price: '',
-      image: null
-    });
-    
-    setShowAddForm(false);
+      await addProduct({
+        name: newProduct.name,
+        code: productCode,
+        category: newProduct.category,
+        description: newProduct.description || '',
+        price: newProduct.price || '0',
+        image: newProduct.image || 'placeholder.jpg',
+        createdAt: new Date().toISOString(),
+        ratings: [],
+        averageRating: 0,
+        numReviews: 0,
+        inStock: true,
+        featured: false
+      });
+      
+      // Reset form on success
+      setNewProduct({
+        name: '',
+        code: '',
+        category: '',
+        description: '',
+        price: '',
+        image: null
+      });
+      
+      setShowAddForm(false);
+      alert('Product added successfully!');
+    } catch (err) {
+      console.error('Error adding product:', err);
+      setError(err.message || 'Failed to add product. Please try again.');
+    }
   };
-    const handleDeleteProduct = (id) => {
-    deleteProduct(id);
+  const handleDeleteProduct = async (id) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        await deleteProduct(id);
+        alert('Product deleted successfully!');
+      } catch (err) {
+        console.error('Error deleting product:', err);
+        alert('Failed to delete product. Please try again.');
+      }
+    }
   };
   
   const handleEditProduct = (product) => {
@@ -148,8 +183,8 @@ const ProductManager = () => {
         </div>
         
         {showAddForm && (
-          <div className="add-product-form">
-            <h2>Add New Product</h2>
+          <div className="add-product-form">            <h2>Add New Product</h2>
+            {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleAddProduct}>
               <div className="form-grid">
                 <div className="form-group">
@@ -360,10 +395,9 @@ const ProductManager = () => {
                 <th>Category</th>
                 <th>Actions</th>
               </tr>
-            </thead>
-            <tbody>
+            </thead>            <tbody>
               {products.map(product => (
-                <tr key={product.id}>
+                <tr key={product._id}>
                   <td>
                     <div className="product-image">
                       <img 
@@ -377,13 +411,12 @@ const ProductManager = () => {
                   <td>{product.code}</td>
                   <td>{product.category}</td>
                   <td>
-                    <div className="action-buttons">
-                      <button className="edit-btn" onClick={() => handleEditProduct(product)}>
+                    <div className="action-buttons">                      <button className="edit-btn" onClick={() => handleEditProduct(product)}>
                         <FaEdit />
                       </button>
                       <button 
                         className="delete-btn" 
-                        onClick={() => handleDeleteProduct(product.id)}
+                        onClick={() => handleDeleteProduct(product._id)}
                       >
                         <FaTrash />
                       </button>

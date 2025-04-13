@@ -42,6 +42,7 @@ function App() {
                   <Route path="/admin" element={<PrivateRoute />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="products" element={<ProductManager />} />
+                    <Route path="products/add" element={<ProductManager />} />
                     <Route path="testimonials" element={<TestimonialManager />} />
                     <Route path="messages" element={<MessagesManager />} />
                   </Route>

@@ -6,8 +6,11 @@ import './Products.css';
 
 function Products() {
   const { products } = useProducts();
-  // Get up to 3 featured products
-  const featuredProducts = products.slice(0, 3);
+  
+  // Sort products by creation date (newest first) and get up to 3
+  const featuredProducts = [...products]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 3);
   return (
     <section id="products" className="products">
       <h2 className="section-title">Featured Collections</h2>

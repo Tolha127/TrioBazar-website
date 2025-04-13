@@ -34,15 +34,27 @@ router.post('/', auth, validate(productSchema), async (req, res, next) => {
 });
 
 // Add a new product with image upload and optimization
-router.post('/with-image', auth, uploadAndOptimizeProductImages('image'), validate(productSchema), async (req, res, next) => {
+router.post('/with-image', auth, uploadAndOptimizeProductImages('image'), async (req, res, next) => {
   try {
+    console.log('Request body:', req.body);
+    console.log('File received:', req.file);
+    
+    // Basic validation since we moved validation after file upload
+    if (!req.body.name || !req.body.code || !req.body.category) {
+      return res.status(400).json({ 
+        error: 'Missing required fields',
+        requiredFields: ['name', 'code', 'category'],
+        receivedFields: Object.keys(req.body)
+      });
+    }
+    
     // Create a new product with optimized image
     const newProduct = new Product({
       name: req.body.name,
       code: req.body.code,
       category: req.body.category,
-      description: req.body.description,
-      price: req.body.price,
+      description: req.body.description || '',
+      price: req.body.price || '0',
       // If image was uploaded, use the optimized image path
       image: req.file ? `/uploads/processed/${path.basename(req.file.path)}` : 'placeholder.jpg',
       createdAt: new Date(),
