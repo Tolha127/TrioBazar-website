@@ -6,7 +6,12 @@
   font-family: 'Playfair Display', Georgia, serif;
 }
 
+html {
+  font-size: 16px; /* Increased from 12px */
+}
+
 body {
+  font-size: 1.1rem; /* Increased from 0.952rem */
   background-color: #f9f7f4;
   color: #32292f;
   line-height: 1.6;

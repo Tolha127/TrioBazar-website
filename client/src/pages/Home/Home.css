@@ -445,3 +445,32 @@
         width: 200px;
     }
 }
+
+/* Learn More button styling in About section */
+.learn-more-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, var(--color-gold) 0%, #b8952f 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(var(--color-gold-rgb), 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.learn-more-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(var(--color-gold-rgb), 0.5);
+    background: linear-gradient(135deg, #b8952f 0%, var(--color-gold) 100%);
+}
+
+.learn-more-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(var(--color-gold-rgb), 0.4);
+}

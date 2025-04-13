@@ -21,10 +21,10 @@ const Home = () => {
       {/* About Preview Section */}
       <section className="section about-preview">
         <div className="container">
-          <div className="about-content">          <div className="about-text">              <h2>About TrioBazaar</h2>
-              <p>Founded by three siblings with a passion for contemporary fashion, TrioBazaar has been creating custom tailored clothing for over 3 years.</p>
-              <p>We value elegance, quality craftsmanship, and customer satisfaction in every piece we create.</p>
-              <a href="/about" className="btn btn-secondary">Learn More</a>
+          <div className="about-content">          <div className="about-text">
+              <h2>About TrioBazaar</h2>              <p>Trio Bazaar is an entrepreneurial firm dedicated to making both modest and expressive designs for women across ages and regions. They look to breach timeline, culture and trend by creatively blending modesty with several cultures and fashion while they sometimes blend cultures' modesty into one another.</p>
+              <p>Trio Bazaar is led by obeisance to Islamic guide on dressing, therefore, they push towards and encourage the adoption of modesty by what they do.</p>
+              <a href="/about" className="btn btn-secondary learn-more-btn">Learn More</a>
             </div><div className="about-image">
               <img 
                 src={require("../../assets/images/triobazaar-logo.png")}
