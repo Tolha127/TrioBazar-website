@@ -1,4 +1,4 @@
-module.exports = function override(config) {
+export default function override(config) {
   // Add polyfills and fallbacks for node built-in modules
   config.resolve.fallback = {
     ...config.resolve.fallback,

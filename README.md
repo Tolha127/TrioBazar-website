@@ -1,1 +1,1 @@
-# TrioBazar-website
+# TrioBazaar-website
