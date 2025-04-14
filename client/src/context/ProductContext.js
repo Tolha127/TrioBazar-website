@@ -15,7 +15,12 @@ export const ProductProvider = ({ children }) => {
     fetchProducts();
   }, []);  const fetchProducts = async () => {
     try {
-      const response = await api.get('/products');
+      console.log('Fetching products from server...');
+      // Add cache-busting parameter to prevent browser caching
+      const timestamp = new Date().getTime();
+      const response = await api.get(`/products?_t=${timestamp}`);
+      console.log('Products fetched:', response.data.length);
+      
       // Process image paths to ensure they're correctly formatted
       const processedProducts = response.data.map(product => {
         // Make sure image paths are properly formatted
@@ -31,6 +36,7 @@ export const ProductProvider = ({ children }) => {
       setProducts(processedProducts);
       setLoading(false);
     } catch (err) {
+      console.error('Error fetching products:', err);
       setError(err.message);
       setLoading(false);
     }
@@ -80,11 +86,14 @@ export const ProductProvider = ({ children }) => {
             'x-auth-token': token,
             // Don't set Content-Type here, it will be set automatically with boundary
           }
-        };
-          // Use the with-image endpoint for FormData/image upload
+        };        // Use the with-image endpoint for FormData/image upload
         const response = await api.post('/products/with-image', formData, config);
         
-        // After successful product addition, fetch all products to ensure everything is in sync
+        // First add the new product to the local state immediately
+        const newProduct = response.data;
+        setProducts(prevProducts => [...prevProducts, newProduct]);
+        
+        // Then fetch all products to ensure everything is in sync
         await fetchProducts();
         
         return response.data;
@@ -141,16 +150,16 @@ export const ProductProvider = ({ children }) => {
         throw new Error('Authentication required. Please log in.');
       }
 
-      // Set authorization headers for the delete request
-      const config = {
+      // Set authorization headers for the delete request - IMPORTANT: Use this format for axios.delete
+      console.log(`Attempting to delete product with ID: ${id}`);
+      
+      // Send the delete request with proper configuration
+      const response = await api.delete(`/products/${id}`, {
         headers: {
           'x-auth-token': token
         }
-      };
+      });
       
-      console.log(`Attempting to delete product with ID: ${id}`);
-      // Send the delete request with proper configuration
-      const response = await api.delete(`/products/${id}`, config);
       console.log('Delete response:', response.data);
       
       // Update local state to remove deleted product
@@ -175,16 +184,55 @@ export const ProductProvider = ({ children }) => {
       setError(err.message);
       throw err;
     }
+  };  // Delete all products
+  const deleteAllProducts = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        throw new Error('Authentication required. Please log in again.');
+      }
+      
+      // Using correct axios syntax for delete with headers
+      const response = await api.delete('/products/delete-all', {
+        headers: {
+          'x-auth-token': token
+        }
+      });
+      
+      // Force clear the local storage cache if any
+      localStorage.removeItem('cachedProducts');
+      
+      // Clear products from state after deletion
+      setProducts([]);
+      
+      // Force a refetch from the server to ensure state is synchronized
+      await fetchProducts();
+      
+      // Return the response data with more information
+      return {
+        success: true,
+        deletedCount: response.data.deletedCount,
+        imagesDeleted: response.data.imagesDeleted,
+        message: response.data.message
+      };
+    } catch (err) {
+      console.error('Delete all products error:', err);
+      setError(err.message);
+      throw err;
+    }
   };
 
   const value = {
     products,
     loading,
     error,
+    fetchProducts,
     addProduct,
     updateProduct,
     deleteProduct,
-    addRating
+    addRating,
+    deleteAllProducts
   };
 
   return (

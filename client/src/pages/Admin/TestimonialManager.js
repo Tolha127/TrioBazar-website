@@ -40,11 +40,9 @@ const TestimonialManager = () => {
       };
       console.log('Adding new testimonial:', testimonialToAdd);
       addTestimonial(testimonialToAdd);
-    }
-
-    // Reset the form
+    }    // Reset the form
     setFormData({
-      id: null,
+      _id: null,
       text: '',
       name: '',
       role: '',
@@ -140,11 +138,10 @@ const TestimonialManager = () => {
           {isEditing && (
             <button
               type="button"
-              className="btn btn-outline"
-              onClick={() => {
+              className="btn btn-outline"              onClick={() => {
                 setIsEditing(false);
                 setFormData({
-                  id: null,
+                  _id: null,
                   text: '',
                   name: '',
                   role: '',

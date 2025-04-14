@@ -3,12 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductContext';
 import './Products.css';
 
-const ProductDetail = () => {
-  const { productId } = useParams();
+const ProductDetail = () => {  const { productId } = useParams();
   const { products } = useProducts();
   const navigate = useNavigate();
-    // Find the product with matching ID - convert productId to number for comparison
-  const product = products.find(p => p.id === parseInt(productId) || p.id === productId);
+  // Find the product with matching ID - check both _id and id fields to support all product formats
+  const product = products.find(p => p._id === productId || p.id === productId);
   
   // Handle case where product is not found
   if (!product) {

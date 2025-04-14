@@ -297,6 +297,67 @@
   text-overflow: ellipsis;
 }
 
+/* Delete Confirmation Modal */
+.delete-confirm-modal {
+  max-width: 500px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.delete-confirm-modal .modal-header {
+  background-color: #dc3545;
+  color: white;
+  padding: 15px 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.delete-confirm-modal .modal-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.delete-confirm-modal .modal-body {
+  padding: 20px;
+  color: #333;
+}
+
+.delete-confirm-modal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  gap: 10px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .admin-header {

@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/Layout/AdminLayout';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import './Admin.css';
 import { useProducts } from '../../context/ProductContext';
 
 const ProductManager = () => {
-  // Use products from context instead of local state
-  const { products, addProduct, deleteProduct, updateProduct } = useProducts();
-  const location = useLocation();
-  
+  // Use products from context including the deleteAllProducts function
+  const { products, addProduct, updateProduct, deleteProduct, deleteAllProducts } = useProducts();
+  const location = useLocation(); // Initialize the useLocation hook
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteAllConfirm, setShowDeleteAllConfirm] = useState(false);
+  const [error, setError] = useState(null);
   const [editingProductId, setEditingProductId] = useState(null);
-  
-  // Check if we're on the "add product" route and show the form automatically
-  useEffect(() => {
-    if (location.pathname === '/admin/products/add') {
-      setShowAddForm(true);
-    }
-  }, [location.pathname]);
   const [newProduct, setNewProduct] = useState({
     name: '',
     code: '',
@@ -28,6 +22,13 @@ const ProductManager = () => {
     price: '',
     image: null
   });
+  
+  // Check if we're on the "add product" route and show the form automatically
+  useEffect(() => {
+    if (location.pathname === '/admin/products/add') {
+      setShowAddForm(true);
+    }
+  }, [location.pathname]);
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +65,6 @@ const ProductManager = () => {
     // Combine prefix with timestamp to ensure uniqueness
     return `${prefix}-${timestamp.toString().slice(-6)}${randomPart}`;
   };
-  const [error, setError] = useState('');
   
   const handleAddProduct = async (e) => {
     e.preventDefault();
@@ -118,6 +118,50 @@ const ProductManager = () => {
       setError(err.message || 'Failed to add product. Please try again.');
     }
   };
+  
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+    
+    updateProduct(editingProductId, {
+      name: newProduct.name,
+      code: newProduct.code,
+      category: newProduct.category,
+      description: newProduct.description,
+      price: newProduct.price,
+      image: typeof newProduct.image === 'object' ? URL.createObjectURL(newProduct.image) : newProduct.image
+    });
+    
+    // Reset form
+    setNewProduct({
+      name: '',
+      code: '',
+      category: '',
+      description: '',
+      price: '',
+      image: null
+    });
+    
+    setShowEditForm(false);
+    setEditingProductId(null);
+  };
+  const handleDeleteAllProducts = async () => {
+    try {
+      const result = await deleteAllProducts();
+      setShowDeleteAllConfirm(false);
+      
+      // Display more detailed information about what was deleted
+      if (result && result.deletedCount > 0) {
+        alert(`Operation successful!\n${result.deletedCount} products deleted.\n${result.imagesDeleted || 0} product images removed.`);
+      } else {
+        alert('No products were found to delete.');
+      }
+    } catch (err) {
+      console.error('Error deleting all products:', err);
+      setError(err.message || 'Failed to delete all products. Please try again.');
+      setShowDeleteAllConfirm(false);
+    }
+  };
+
   const handleDeleteProduct = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
@@ -143,43 +187,27 @@ const ProductManager = () => {
     setShowEditForm(true);
   };
   
-  const handleUpdateProduct = (e) => {
-    e.preventDefault();
-    
-    updateProduct(editingProductId, {
-      name: newProduct.name,
-      code: newProduct.code,
-      category: newProduct.category,
-      description: newProduct.description,
-      price: newProduct.price,
-      image: typeof newProduct.image === 'object' ? URL.createObjectURL(newProduct.image) : newProduct.image
-    });
-    
-    // Reset form
-    setNewProduct({
-      name: '',
-      code: '',
-      category: '',
-      description: '',
-      price: '',
-      image: null
-    });
-    
-    setShowEditForm(false);
-    setEditingProductId(null);
-  };
-  
   return (
     <AdminLayout>
       <div className="product-manager">
         <div className="admin-header">
           <h1>Product Management</h1>
-          <button 
-            className="btn btn-primary" 
-            onClick={() => setShowAddForm(!showAddForm)}
-          >
-            <FaPlus /> Add New Product
-          </button>
+          <div className="admin-actions">
+            <button 
+              className="btn btn-primary" 
+              onClick={() => setShowAddForm(!showAddForm)}
+            >
+              <FaPlus /> Add New Product
+            </button>
+            {products.length > 0 && (
+              <button 
+                className="btn btn-danger"
+                onClick={() => setShowDeleteAllConfirm(true)}
+              >
+                <FaTrash /> Delete All Products
+              </button>
+            )}
+          </div>
         </div>
         
         {showAddForm && (
@@ -428,6 +456,35 @@ const ProductManager = () => {
           </table>
         </div>
       </div>
+
+      {/* Delete All Products Confirmation Modal */}
+      {showDeleteAllConfirm && (
+        <div className="modal-overlay">
+          <div className="modal-content delete-confirm-modal">
+            <div className="modal-header">
+              <h3><FaExclamationTriangle /> Confirm Deletion</h3>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to delete ALL products? This action cannot be undone.</p>
+              <p><strong>This will permanently remove {products.length} products from your database.</strong></p>
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn btn-danger"
+                onClick={handleDeleteAllProducts}
+              >
+                Yes, Delete All Products
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowDeleteAllConfirm(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminLayout>
   );
 };

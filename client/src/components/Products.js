@@ -18,13 +18,17 @@ function Products() {
         {featuredProducts.length > 0 ? (
           featuredProducts.map(product => (
             <div className="product-card" key={product._id}>
-              <>
-                <Link to={`/products/${product._id}`}>
+              <>              <Link to={`/products/${product._id}`}>
                   <img 
                     src={product.image === 'placeholder.jpg' ? 
-                      'https://via.placeholder.com/400/300?text=Islamic+Clothing' : product.image} 
+                      'https://via.placeholder.com/400/300?text=Islamic+Clothing' : 
+                      (product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`)} 
                     alt={product.name} 
                     className="product-image" 
+                    onError={(e) => {
+                      console.error("Image failed to load:", e.target.src);
+                      e.target.src = 'https://via.placeholder.com/400/300?text=Image+Not+Found';
+                    }}
                   />
                 </Link>
                 <div className="product-details">

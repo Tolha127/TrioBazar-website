@@ -28,8 +28,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "node --max-old-space-size=4096 ./node_modules/react-app-rewired/scripts/start.js",
+    "build": "node --max-old-space-size=4096 ./node_modules/react-app-rewired/scripts/build.js",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
