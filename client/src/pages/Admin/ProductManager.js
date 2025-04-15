@@ -118,31 +118,72 @@ const ProductManager = () => {
       setError(err.message || 'Failed to add product. Please try again.');
     }
   };
-  
-  const handleUpdateProduct = async (e) => {
+    const handleUpdateProduct = async (e) => {
     e.preventDefault();
     
-    updateProduct(editingProductId, {
-      name: newProduct.name,
-      code: newProduct.code,
-      category: newProduct.category,
-      description: newProduct.description,
-      price: newProduct.price,
-      image: typeof newProduct.image === 'object' ? URL.createObjectURL(newProduct.image) : newProduct.image
-    });
-    
-    // Reset form
-    setNewProduct({
-      name: '',
-      code: '',
-      category: '',
-      description: '',
-      price: '',
-      image: null
-    });
-    
-    setShowEditForm(false);
-    setEditingProductId(null);
+    try {
+      // Check if we have a new image file to upload
+      if (typeof newProduct.image === 'object' && newProduct.image instanceof File) {
+        // Create form data for image upload
+        const formData = new FormData();
+        formData.append('name', newProduct.name);
+        formData.append('code', newProduct.code);
+        formData.append('category', newProduct.category);
+        formData.append('description', newProduct.description || '');
+        formData.append('price', newProduct.price || '0');
+        formData.append('image', newProduct.image);
+        
+        // Get admin token
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+          throw new Error('Authentication required. Please log in again.');
+        }
+        
+        // Use the API directly to use the with-image endpoint
+        const response = await fetch(`/api/products/${editingProductId}/with-image`, {
+          method: 'PUT',
+          headers: {
+            'x-auth-token': token
+          },
+          body: formData
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to update product');
+        }
+        
+        // Update successful
+        alert('Product updated successfully!');
+      } else {
+        // No new image, use regular update
+        await updateProduct(editingProductId, {
+          name: newProduct.name,
+          code: newProduct.code,
+          category: newProduct.category,
+          description: newProduct.description,
+          price: newProduct.price,
+          image: newProduct.image
+        });
+        
+        alert('Product updated successfully!');
+      }
+      
+      // Reset form
+      setNewProduct({
+        name: '',
+        code: '',
+        category: '',
+        description: '',
+        price: '',
+        image: null
+      });
+      
+      setShowEditForm(false);
+      setEditingProductId(null);
+    } catch (err) {
+      console.error('Error updating product:', err);
+      setError(err.message || 'Failed to update product. Please try again.');
+    }
   };
   const handleDeleteAllProducts = async () => {
     try {

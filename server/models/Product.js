@@ -25,10 +25,13 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: false,
     default: '0'
-  },
-  image: {
+  },  image: {
     type: String,
     default: 'placeholder.jpg'
+  },
+  imagePublicId: {
+    type: String,
+    default: null
   },
   ratings: [{
     rating: Number,

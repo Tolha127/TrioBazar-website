@@ -5,7 +5,8 @@ const auth = require('../middleware/auth');
 const validate = require('../middleware/validate');
 const { productSchema } = require('../validations/productValidation');
 const { productSearchSchema } = require('../validations/searchValidation');
-const { uploadAndOptimizeProductImages, processedDir } = require('../middleware/imageUpload');
+const { uploadAndOptimizeProductImages } = require('../middleware/imageUpload');
+const { deleteFromCloudinary } = require('../utils/cloudStorage');
 const path = require('path');
 const fs = require('fs');
 
@@ -48,15 +49,17 @@ router.post('/with-image', auth, uploadAndOptimizeProductImages('image'), async 
       });
     }
     
-    // Create a new product with optimized image
+    // Create a new product with Cloudinary image url
     const newProduct = new Product({
       name: req.body.name,
       code: req.body.code,
       category: req.body.category,
       description: req.body.description || '',
       price: req.body.price || '0',
-      // If image was uploaded, use the optimized image path
-      image: req.file ? `/uploads/processed/${path.basename(req.file.path)}` : 'placeholder.jpg',
+      // If image was uploaded, use the Cloudinary URL
+      image: req.body.imageUrl || 'placeholder.jpg',
+      // Store Cloudinary public ID for future operations
+      imagePublicId: req.body.imagePublicId || null,
       createdAt: new Date(),
     });
 
@@ -199,15 +202,19 @@ router.put('/:id/with-image', auth, uploadAndOptimizeProductImages('image'), asy
       price: req.body.price
     };
     
-    // If new image was uploaded
-    if (req.file) {
-      updateData.image = `/uploads/processed/${path.basename(req.file.path)}`;
+    // If new image was uploaded to Cloudinary
+    if (req.body.imageUrl) {
+      updateData.image = req.body.imageUrl;
+      updateData.imagePublicId = req.body.imagePublicId;
       
-      // Remove old image if it exists and is not a placeholder
-      if (product.image && product.image !== 'placeholder.jpg' && product.image.startsWith('/uploads/')) {
-        const oldImagePath = path.join(processedDir, path.basename(product.image));
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+      // Delete old image from Cloudinary if it exists and is not a placeholder
+      if (product.imagePublicId) {
+        try {
+          await deleteFromCloudinary(product.imagePublicId);
+          console.log(`Deleted old image with public ID: ${product.imagePublicId}`);
+        } catch (err) {
+          console.error('Error deleting old image from Cloudinary:', err);
+          // Continue with update even if deletion fails
         }
       }
     }
@@ -236,22 +243,19 @@ router.delete('/delete-all', auth, async (req, res, next) => {
     // Force a refresh of the database
     console.log('Attempting to delete all products from database...');
     
-    // Get all products to delete their images
+    // Get all products to delete their images from Cloudinary
     const products = await Product.find();
     let imagesDeleted = 0;
     
-    // Delete all non-placeholder images
+    // Delete all non-placeholder images from Cloudinary
     for (const product of products) {
       try {
-        if (product.image && product.image !== 'placeholder.jpg' && product.image.startsWith('/uploads/')) {
-          const imagePath = path.join(processedDir, path.basename(product.image));
-          if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
-            imagesDeleted++;
-          }
+        if (product.imagePublicId) {
+          await deleteFromCloudinary(product.imagePublicId);
+          imagesDeleted++;
         }
       } catch (imageErr) {
-        console.error('Error deleting image:', imageErr);
+        console.error('Error deleting image from Cloudinary:', imageErr);
         // Continue with deletion even if image deletion fails
       }
     }
@@ -276,17 +280,20 @@ router.delete('/delete-all', auth, async (req, res, next) => {
 // Delete a product by ID
 router.delete('/:id', auth, async (req, res, next) => {
   try {
-    // Find product first to get image path
+    // Find product first to get image details
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    // Remove image if it exists and is not a placeholder
-    if (product.image && product.image !== 'placeholder.jpg' && product.image.startsWith('/uploads/')) {
-      const imagePath = path.join(processedDir, path.basename(product.image));
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
+    // Delete image from Cloudinary if it exists and has a public ID
+    if (product.imagePublicId) {
+      try {
+        const result = await deleteFromCloudinary(product.imagePublicId);
+        console.log(`Deleted image from Cloudinary: ${product.imagePublicId}`, result);
+      } catch (cloudinaryError) {
+        console.error('Error deleting image from Cloudinary:', cloudinaryError);
+        // Continue with deletion even if Cloudinary deletion fails
       }
     }
     

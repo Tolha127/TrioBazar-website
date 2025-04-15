@@ -10,10 +10,16 @@ const MessagesManager = () => {
   const handleMarkAsRead = (messageId) => {
     markAsRead(messageId);
   };
-
-  const handleDeleteMessage = (messageId) => {
+  const handleDeleteMessage = async (messageId) => {
     if (window.confirm('Are you sure you want to delete this message?')) {
-      deleteMessage(messageId);
+      try {
+        await deleteMessage(messageId);
+        // Success message
+        alert('Message deleted successfully');
+      } catch (error) {
+        console.error('Error deleting message:', error);
+        alert('Failed to delete message. Please try again.');
+      }
     }
   };
 
@@ -52,15 +58,14 @@ const MessagesManager = () => {
                     <p><strong>Email:</strong> {message.email}</p>
                     <p className="message-text">{message.message}</p>
                   </div>
-                  <div className="message-actions">
-                    {!message.read && (
+                  <div className="message-actions">                    {!message.read && (
                       <button 
                         className="btn btn-primary"
-                        onClick={() => handleMarkAsRead(message.id)}
+                        onClick={() => handleMarkAsRead(message._id)}
                       >
                         <FaCheckCircle /> Mark as Read
                       </button>
-                    )}                    <button 
+                    )}<button 
                       className="btn btn-danger"
                       onClick={() => handleDeleteMessage(message._id)}
                     >

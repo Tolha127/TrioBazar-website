@@ -53,9 +53,17 @@ const TestimonialManager = () => {
   const editTestimonial = (testimonial) => {
     setFormData(testimonial);
     setIsEditing(true);
-  };
-  const handleDeleteTestimonial = (id) => {
-    deleteTestimonial(id);
+  };  const handleDeleteTestimonial = async (id) => {
+    if (window.confirm('Are you sure you want to delete this testimonial?')) {
+      try {
+        await deleteTestimonial(id);
+        // Success message
+        alert('Testimonial deleted successfully');
+      } catch (error) {
+        console.error('Error deleting testimonial:', error);
+        alert('Failed to delete testimonial. Please try again.');
+      }
+    }
   };
 
   // In a real application, you would use useEffect to load testimonials from your API

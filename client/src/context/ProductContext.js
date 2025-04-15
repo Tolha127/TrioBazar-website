@@ -20,17 +20,14 @@ export const ProductProvider = ({ children }) => {
       const timestamp = new Date().getTime();
       const response = await api.get(`/products?_t=${timestamp}`);
       console.log('Products fetched:', response.data.length);
-      
-      // Process image paths to ensure they're correctly formatted
+        // Process products (no need to modify Cloudinary URLs)
       const processedProducts = response.data.map(product => {
-        // Make sure image paths are properly formatted
-        if (product.image && typeof product.image === 'string') {
-          // If the path doesn't include the full URL and starts with /uploads
-          if (product.image.startsWith('/uploads')) {
-            // Prepend the server URL (assuming it's at localhost:5000)
-            product.image = `http://localhost:5000${product.image}`;
-          }
+        // For legacy products with local file paths
+        if (product.image && typeof product.image === 'string' && product.image.startsWith('/uploads')) {
+          // Prepend the server URL for local files (this handles any existing products before Cloudinary migration)
+          product.image = `http://localhost:5000${product.image}`;
         }
+        // Cloudinary URLs are already absolute and don't need modification
         return product;
       });
       setProducts(processedProducts);

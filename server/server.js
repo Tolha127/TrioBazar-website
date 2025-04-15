@@ -64,39 +64,48 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Serve static files from uploads directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 // Test route
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is running and connected!' });
 });
 
-// MongoDB Connection with improved pooling and reconnection
+// MongoDB Atlas Connection with improved pooling and reconnection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/trioBazaar';
 
 // Add more detailed connection logging
-console.log('Attempting to connect to MongoDB at:', MONGODB_URI);
+const isAtlasConnection = MONGODB_URI.includes('mongodb.net');
+console.log(`Attempting to connect to MongoDB ${isAtlasConnection ? 'Atlas' : 'local'} database`);
 
-// Enhanced connection with better timeout settings and debug mode
+// Enhanced connection with optimized settings for MongoDB Atlas
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   socketTimeoutMS: 120000, // Doubled timeout for operations from 60s to 120s
   connectTimeoutMS: 60000, // Doubled timeout for initial connection from 30s to 60s
   keepAlive: true,
-  maxPoolSize: 100, // Increased from 50 to 100 for more concurrent connections
+  maxPoolSize: isAtlasConnection ? 50 : 100, // Reduced for Atlas to prevent connection issues
   serverSelectionTimeoutMS: 60000, // Significantly increased from 20s to 60s
   heartbeatFrequencyMS: 10000, // Added regular heartbeat to keep connection alive
   retryWrites: true,
   bufferCommands: true, // Ensure commands are buffered when disconnected
+  // ssl: true is redundant since it's already in the Atlas connection string
   // Removed bufferMaxEntries option as it's not supported in newer MongoDB drivers
-  autoIndex: false // Disable automatic indexing for better performance
+  autoIndex: false, // Disable automatic indexing for better performance
+  w: 'majority', // Added write concern for Atlas
+  readPreference: isAtlasConnection ? 'secondaryPreferred' : 'primary' // Better read scaling for Atlas
 })
-.then(() => console.log('MongoDB Connected Successfully with improved timeout settings'))
+.then(() => {
+  console.log(`MongoDB ${isAtlasConnection ? 'Atlas' : 'local'} Connected Successfully`);
+  // Log database name to ensure we're connected to the right database
+  console.log(`Connected to database: ${mongoose.connection.name}`);
+})
 .catch(err => {
   console.log('MongoDB Connection Error:', err);
-  console.log('Please ensure your MongoDB service is running properly');
+  if (isAtlasConnection) {
+    console.log('Please check your Atlas connection string and network connectivity');
+  } else {
+    console.log('Please ensure your local MongoDB service is running properly');
+  }
 });
 
 // Add connection event handlers

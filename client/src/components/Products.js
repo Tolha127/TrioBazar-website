@@ -18,11 +18,13 @@ function Products() {
         {featuredProducts.length > 0 ? (
           featuredProducts.map(product => (
             <div className="product-card" key={product._id}>
-              <>              <Link to={`/products/${product._id}`}>
-                  <img 
+              <>              <Link to={`/products/${product._id}`}>                  <img 
                     src={product.image === 'placeholder.jpg' ? 
                       'https://via.placeholder.com/400/300?text=Islamic+Clothing' : 
-                      (product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`)} 
+                      (product.image.startsWith('http') ? 
+                        product.image : // Use Cloudinary URL as is
+                        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${product.image}`) // For legacy paths
+                    } 
                     alt={product.name} 
                     className="product-image" 
                     onError={(e) => {
