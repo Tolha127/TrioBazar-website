@@ -128,14 +128,27 @@ const Contact = () => {
           </div>
         </div>
       </section>
-      
-      {/* Map section (optional) */}
+        {/* Map section with Google Maps */}
       <section className="section map-section">
         <div className="container">
           <h2>Our Location</h2>
           <div className="map-container">
-            {/* Embed a map here or use an image placeholder */}
-            <div className="map-placeholder">Map will be integrated here</div>
+            <iframe
+              title="TrioBazaar Location"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCX5QMZ9LeBgj7zkwyeSFY9BQ4YzTJgnHI
+                &q=7.662250,4.205833&zoom=15`}
+            ></iframe>
+            <div className="address-container">
+              <h3>Visit Our Store</h3>
+              <p>TrioBazaar Fashion</p>
+              <p>Osogbo, Osun State, Nigeria</p>
+              <p>Open Monday - Saturday: 9am - 6pm</p>
+            </div>
           </div>
         </div>
       </section>
