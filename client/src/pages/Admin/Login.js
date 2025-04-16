@@ -5,6 +5,7 @@ import './Admin.css';
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,11 +16,12 @@ const AdminLogin = () => {
   };  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     
     try {
       // Make a real API call to the backend using environment variable
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-      const response = await fetch(`${apiUrl}/auth/login`, {
+      console.log('Attempting login with API URL:', apiUrl);      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,13 +30,27 @@ const AdminLogin = () => {
       });
       
       const data = await response.json();
+      console.log('Login response status:', response.status);
       
       if (response.ok) {
-        // Store the real JWT token from the backend
+        // Store the JWT token and user info from the backend
+        console.log('Login successful, storing token');
         localStorage.setItem('adminToken', data.token);
+        
+        // If the server sends user role info, store it too
+        if (data.user) {
+          localStorage.setItem('userRole', data.user.role || 'admin');
+        } else {
+          localStorage.setItem('userRole', 'admin'); // Default to admin for backward compatibility
+        }
+        
+        // Set last login time
+        localStorage.setItem('loginTime', new Date().toISOString());
+        
         navigate('/admin/dashboard');
       } else {
         // Show error message from the server
+        console.log('Login failed with message:', data.message);
         setError(data.message || 'Invalid credentials');
       }
     } catch (err) {
@@ -52,8 +68,7 @@ const AdminLogin = () => {
         
         <form onSubmit={handleSubmit} className="admin-login-form">
           <h2>Sign In</h2>
-          
-          {error && <div className="error-message">{error}</div>}
+            {error && <div className="error-message">{error}</div>}
           
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -63,6 +78,7 @@ const AdminLogin = () => {
               name="username"
               value={credentials.username}
               onChange={handleChange}
+              disabled={isLoading}
               required
             />
           </div>
@@ -75,11 +91,14 @@ const AdminLogin = () => {
               name="password"
               value={credentials.password}
               onChange={handleChange}
+              disabled={isLoading}
               required
             />
           </div>
           
-          <button type="submit" className="btn btn-primary">Login</button>
+          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+            {isLoading ? 'Authenticating...' : 'Login'}
+          </button>
         </form>
       </div>
     </div>
