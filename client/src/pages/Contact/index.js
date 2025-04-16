@@ -100,19 +100,17 @@ const Contact = () => {
                     <a href="mailto:info@triobazaar.com" className="btn btn-outline">Send Email</a>
                   </div>
                 </div>
-                
-                <div className="contact-method whatsapp-contact">
+                  <div className="contact-method whatsapp-contact">
                   <FaWhatsapp className="contact-icon" />
                   <div>                    <h3>WhatsApp</h3>
                     <p>+234 916 710 8795</p>
-                    <a href="https://wa.me/2349167108795?text=Hello%20TrioBazaar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings." target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
+                    <a href={`https://wa.me/${process.env.REACT_APP_WHATSAPP_NUMBER}?text=Hello%20TrioBazaar!%20I'm%20interested%20in%20your%20tailoring%20services.%20I%20would%20like%20to%20know%20more%20about%20your%20offerings.`} target="_blank" rel="noopener noreferrer" className="btn btn-outline">Chat on WhatsApp</a>
                   </div>
                 </div>
               </div>
               
               <div className="social-media-container">
-                <h3>Follow Us</h3>
-                <div className="social-links">
+                <h3>Follow Us</h3>              <div className="social-links">
                   <a href="https://instagram.com/triobazaar" target="_blank" rel="noopener noreferrer" className="social-link instagram">
                     <FaInstagram />
                     <span>Instagram</span>
@@ -140,8 +138,8 @@ const Contact = () => {
               style={{ border: 0 }}
               loading="lazy"
               allowFullScreen
-              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyCX5QMZ9LeBgj7zkwyeSFY9BQ4YzTJgnHI
-                &q=7.662250,4.205833&zoom=15`}
+              src={`https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+                &q=${process.env.REACT_APP_STORE_LATITUDE},${process.env.REACT_APP_STORE_LONGITUDE}&zoom=15`}
             ></iframe>
             <div className="address-container">
               <h3>Visit Our Store</h3>

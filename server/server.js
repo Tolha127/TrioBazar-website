@@ -15,6 +15,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust proxy - required for apps running behind a reverse proxy like Render or Heroku
+app.set('trust proxy', 1);
+
 // Security headers
 app.use(helmet());
 
