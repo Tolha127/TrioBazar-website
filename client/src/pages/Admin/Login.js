@@ -12,14 +12,14 @@ const AdminLogin = () => {
       ...credentials,
       [e.target.name]: e.target.value
     });
-  };
-  const handleSubmit = async (e) => {
+  };  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
     try {
-      // Make a real API call to the backend
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      // Make a real API call to the backend using environment variable
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

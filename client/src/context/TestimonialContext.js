@@ -5,7 +5,7 @@ const TestimonialContext = createContext();
 
 export const useTestimonials = () => useContext(TestimonialContext);
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export const TestimonialProvider = ({ children }) => {
   const [testimonials, setTestimonials] = useState([]);

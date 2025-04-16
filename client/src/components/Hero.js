@@ -11,13 +11,8 @@ function Hero() {
           <Link to="/contact" className="cta-button">Book Consultation</Link>
           <Link to="/products" className="secondary-button">View Collections</Link>
         </div>
-      </div>
-      <div className="hero-image">
+      </div>      <div className="hero-image">
         <img className="product-display" src={require("../assets/images/triobazaar-logo.png")} alt="Custom tailored attire" />
-        <div className="hero-badge">
-          <span>20% OFF</span>
-          <span>First Order</span>
-        </div>
       </div>
     </section>
   );

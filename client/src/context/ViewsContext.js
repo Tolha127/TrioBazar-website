@@ -27,9 +27,14 @@ export const ViewsProvider = ({ children }) => {  const [pageViews, setPageViews
   const getTotalViews = () => {
     return Object.values(pageViews).reduce((sum, views) => sum + views, 0);
   };
-
+  
+  const resetViews = () => {
+    // Reset all page views to 0
+    localStorage.removeItem('trioBazaarPageViews');
+    setPageViews({});
+  };
   return (
-    <ViewsContext.Provider value={{ pageViews, getTotalViews }}>
+    <ViewsContext.Provider value={{ pageViews, getTotalViews, resetViews }}>
       {children}
     </ViewsContext.Provider>
   );
