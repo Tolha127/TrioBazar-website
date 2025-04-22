@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import LoadingIndicator from '../../components/common/LoadingIndicator';
+import { API_BASE_URL } from '../../config/environment';
 import './Admin.css';
 
 const AdminLogin = () => {
@@ -7,21 +10,41 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, isAuthenticated, authError, clearAuthError } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/admin/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Check for auth errors passed from PrivateRoute
+  useEffect(() => {
+    if (location.state?.authError) {
+      setError(location.state.authError);
+      // Clear the location state to prevent error from persisting on refresh
+      window.history.replaceState({}, document.title);
+    } else if (authError) {
+      setError(authError);
+      clearAuthError();
+    }
+  }, [location.state, authError, clearAuthError]);
 
   const handleChange = (e) => {
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value
     });
-  };  const handleSubmit = async (e) => {
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
-    try {
-      // Make a real API call to the backend using environment variable
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-      console.log('Attempting login with API URL:', apiUrl);      const response = await fetch(`${apiUrl}/auth/login`, {
+      try {
+      // Make a real API call to the backend using our centralized environment config
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,32 +53,18 @@ const AdminLogin = () => {
       });
       
       const data = await response.json();
-      console.log('Login response status:', response.status);
       
       if (response.ok) {
-        // Store the JWT token and user info from the backend
-        console.log('Login successful, storing token');
-        localStorage.setItem('adminToken', data.token);
-        
-        // If the server sends user role info, store it too
-        if (data.user) {
-          localStorage.setItem('userRole', data.user.role || 'admin');
-        } else {
-          localStorage.setItem('userRole', 'admin'); // Default to admin for backward compatibility
-        }
-        
-        // Set last login time
-        localStorage.setItem('loginTime', new Date().toISOString());
-        
+        // Use the login function from AuthContext instead of manually setting localStorage
+        login(data.token, data.user?.role || 'admin');
         navigate('/admin/dashboard');
       } else {
-        // Show error message from the server
-        console.log('Login failed with message:', data.message);
         setError(data.message || 'Invalid credentials');
-      }
-    } catch (err) {
-      setError('Login failed. Please try again.');
+      }    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
       console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,11 +103,16 @@ const AdminLogin = () => {
               disabled={isLoading}
               required
             />
-          </div>
-          
+          </div>          
           <button type="submit" className="btn btn-primary" disabled={isLoading}>
-            {isLoading ? 'Authenticating...' : 'Login'}
+            {isLoading ? 'Signing In...' : 'Login'}
           </button>
+          
+          {isLoading && (
+            <div className="login-loading-container">
+              <LoadingIndicator message="Authenticating..." />
+            </div>
+          )}
         </form>
       </div>
     </div>

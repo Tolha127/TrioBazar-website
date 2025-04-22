@@ -4,15 +4,19 @@ import { FaBox, FaEdit, FaSignOutAlt, FaChartLine, FaEnvelope } from 'react-icon
 import AdminLayout from '../../components/Layout/AdminLayout';
 import { useViews } from '../../context/ViewsContext';
 import { useProducts } from '../../context/ProductContext';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import './Admin.css';
 
 const AdminDashboard = () => {
   const { products } = useProducts();
   const { getTotalViews } = useViews();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    window.location.href = '/admin/login';
+    logout();
+    navigate('/admin/login');
   };
 
   return (

@@ -9,6 +9,7 @@ const path = require('path');
 const errorHandler = require('./middleware/errorHandler');
 const errorLogger = require('./middleware/errorLogger');
 const accessibilityHeaders = require('./middleware/accessibilityHeaders');
+const securityHeaders = require('./middleware/securityHeaders');
 
 // Load environment variables
 dotenv.config();
@@ -20,6 +21,7 @@ app.set('trust proxy', 1);
 
 // Security headers
 app.use(helmet());
+app.use(securityHeaders); // Custom security headers for production
 
 // CORS configuration - more permissive for development
 app.use(cors({
