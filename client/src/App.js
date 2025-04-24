@@ -27,8 +27,8 @@ function App() {
       <ProductProvider>
         <TestimonialProvider>
           <MessagesProvider>
-            <ViewsProvider>
-              <Router>
+            <Router>
+              <ViewsProvider>
                 <div className="app">
                   <Header />
                   <main className="main-content">
@@ -53,8 +53,8 @@ function App() {
                   </main>
                   <Footer />
                 </div>
-              </Router>
-            </ViewsProvider>
+              </ViewsProvider>
+            </Router>
           </MessagesProvider>
         </TestimonialProvider>
       </ProductProvider>
