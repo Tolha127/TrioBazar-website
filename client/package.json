@@ -12,7 +12,8 @@
     "os": false,
     "url": false,
     "zlib": false,
-    "util": false
+    "util": false,
+    "process/browser": "process/browser.js"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.6",
