@@ -1,0 +1,46 @@
+{
+  "short_name": "TrioBazar",
+  "name": "TrioBazar - Modest Islamic Fashion",
+  "description": "TrioBazar offers modest and expressive designs for women across ages and regions, blending modesty with culture and fashion.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#C8A2C8",
+  "background_color": "#FFFFFF",
+  "categories": ["shopping", "lifestyle", "fashion"],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.jpg",
+      "type": "image/jpeg",
+      "sizes": "1920x1080",
+      "platform": "wide"
+    },
+    {
+      "src": "/screenshots/mobile.jpg",
+      "type": "image/jpeg",
+      "sizes": "750x1334",
+      "platform": "narrow"
+    }
+  ],
+  "prefer_related_applications": false
+}
