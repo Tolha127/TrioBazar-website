@@ -1,9 +1,13 @@
 const webpack = require('webpack');
 
 module.exports = function override(config, env) {
-  // Add polyfills and fallbacks for node built-in modules
+  // Simplified config with focus on process polyfill
   config.resolve.fallback = {
     ...config.resolve.fallback,
+    "process": require.resolve("process/browser"),
+    "process/browser": require.resolve("process/browser"),
+    
+    // Keep other polyfills for compatibility
     "assert": require.resolve("assert/"),
     "crypto": require.resolve("crypto-browserify"),
     "http": require.resolve("stream-http"),
@@ -12,17 +16,15 @@ module.exports = function override(config, env) {
     "url": require.resolve("url/"),
     "util": require.resolve("util/"),
     "zlib": require.resolve("browserify-zlib"),
-    "buffer": require.resolve("buffer/"),
-    "process": require.resolve("process/browser"),
-    "process/browser": require.resolve("process/browser")
+    "buffer": require.resolve("buffer/")
   };
 
-  // Add webpack plugins to provide Buffer and process
+  // Add webpack plugins to provide process
   config.plugins = [
     ...config.plugins,
     new webpack.ProvidePlugin({
-      Buffer: ['buffer', 'Buffer'],
       process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
     }),
   ];
 
