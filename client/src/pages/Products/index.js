@@ -4,6 +4,7 @@ import { useProducts } from '../../context/ProductContext';
 import StarRating from '../../components/common/StarRating';
 import ImagePreviewModal from '../../components/common/ImagePreviewModal';
 import './Products.css';
+import './product-images.css';
 
 const Products = () => {
   const { products } = useProducts();

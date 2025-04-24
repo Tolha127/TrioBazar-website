@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductContext';
 import './Products.css';
+import './product-images.css';
 
 const ProductDetail = () => {  const { productId } = useParams();
   const { products } = useProducts();
@@ -36,14 +37,21 @@ const ProductDetail = () => {  const { productId } = useParams();
       
       <section className="product-detail-section">
         <div className="container">
-          <div className="product-detail-content">
-            <div className="product-detail-image">
+          <div className="product-detail-content">            <div className="product-detail-image">
               <img 
                 src={product.image === 'placeholder.jpg' ? 
-                  'https://via.placeholder.com/600x600?text=Islamic+Clothing' : product.image} 
+                  'https://via.placeholder.com/600x600?text=Islamic+Clothing' : 
+                  (product.image.startsWith('http') ? 
+                    product.image : // Use Cloudinary URL as is
+                    `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${product.image}`) // For legacy paths
+                } 
                 alt={product.name}
+                onError={(e) => {
+                  console.error("Image failed to load:", e.target.src);
+                  e.target.src = 'https://via.placeholder.com/600x600?text=Image+Not+Found';
+                }}
               />
-            </div>            <div className="product-detail-info">
+            </div><div className="product-detail-info">
               <h2>{product.name}</h2>
               {product.code && <p className="product-code">Product Code: {product.code}</p>}
               <p className="product-category">Category: {product.category}</p>

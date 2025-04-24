@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import StarRating from './common/StarRating';
 import './Products.css';
+import '../pages/Products/product-images.css';
 
 function Products() {
   const { products } = useProducts();
@@ -16,35 +17,32 @@ function Products() {
       <h2 className="section-title">Featured Collections</h2>
       <div className="products-grid">
         {featuredProducts.length > 0 ? (
-          featuredProducts.map(product => (
-            <div className="product-card" key={product._id}>
-              <>              <Link to={`/products/${product._id}`}>                  <img 
+          featuredProducts.map(product => (            <div className="product-card" key={product._id}>
+              <Link to={`/products/${product._id}`}>
+                <div className="featured-product-image">
+                  <img 
                     src={product.image === 'placeholder.jpg' ? 
                       'https://via.placeholder.com/400/300?text=Islamic+Clothing' : 
                       (product.image.startsWith('http') ? 
                         product.image : // Use Cloudinary URL as is
                         `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${product.image}`) // For legacy paths
                     } 
-                    alt={product.name} 
-                    className="product-image" 
+                    alt={product.name}
                     onError={(e) => {
                       console.error("Image failed to load:", e.target.src);
                       e.target.src = 'https://via.placeholder.com/400/300?text=Image+Not+Found';
                     }}
                   />
-                </Link>
-                <div className="product-details">
-                  <h3 className="product-title">{product.name}</h3>
+                </div>
+                <div className="product-info">
+                  <h3 className="product-name">{product.name}</h3>
                   <p className="product-price">{product.price}</p>
-                  <p className="product-description">{product.description}</p>
                   <div className="product-meta">
                     <StarRating rating={product.averageRating} size="small" />
                   </div>
-                  <Link to={`/products/${product._id}`} className="add-to-cart">
-                    Book Fitting
-                  </Link>
+                  <span className="view-details">View Details</span>
                 </div>
-              </>
+              </Link>
             </div>
           ))        ) : (
           <div className="no-products-message">

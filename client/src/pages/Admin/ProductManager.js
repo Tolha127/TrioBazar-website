@@ -4,6 +4,7 @@ import { FaPlus, FaEdit, FaTrash, FaExclamationTriangle } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import './Admin.css';
 import { useProducts } from '../../context/ProductContext';
+import '../Products/product-images.css';
 
 const ProductManager = () => {
   // Use products from context including the deleteAllProducts function
