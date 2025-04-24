@@ -13,7 +13,8 @@ module.exports = function override(config, env) {
     "util": require.resolve("util/"),
     "zlib": require.resolve("browserify-zlib"),
     "buffer": require.resolve("buffer/"),
-    "process": require.resolve("process/browser")
+    "process": require.resolve("process/browser"),
+    "process/browser": require.resolve("process/browser")
   };
 
   // Add webpack plugins to provide Buffer and process
