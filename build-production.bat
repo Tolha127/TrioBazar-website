@@ -6,18 +6,18 @@ echo.
 echo This script will prepare the TrioBazar website for production deployment.
 echo.
 
-REM Navigate to client directory
-cd client
+REM Set OpenSSL legacy provider for compatibility
+set NODE_OPTIONS=--openssl-legacy-provider
 
-REM Install or update dependencies
-echo Installing dependencies...
+REM Build client
+echo Building client application...
+cd client
 call npm install
 if %ERRORLEVEL% neq 0 (
   echo Error installing client dependencies.
   exit /b %ERRORLEVEL%
 )
 
-REM Create optimized production build
 echo.
 echo Creating production build...
 call npm run build
@@ -26,14 +26,19 @@ if %ERRORLEVEL% neq 0 (
   exit /b %ERRORLEVEL%
 )
 
-REM Navigate back to root
-cd ..
-
-REM Install server dependencies
+REM Return to root directory and prepare server
 echo.
-echo Installing server dependencies...
+echo Building server application...
+cd ..
 cd server
 call npm install --only=production
+if %ERRORLEVEL% neq 0 (
+  echo Error installing server dependencies.
+  exit /b %ERRORLEVEL%
+)
+
+echo.
+echo TrioBazar website is ready for deployment!
 if %ERRORLEVEL% neq 0 (
   echo Error installing server dependencies.
   exit /b %ERRORLEVEL%
