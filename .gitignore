@@ -1,0 +1,59 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Environment variables - containing sensitive data
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build outputs
+/client/build/
+/dist/
+/out/
+
+# Debug logs
+logs/
+*.log
+
+# MongoDB local data
+/data/
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Uploaded files
+/server/uploads/original/*
+/server/uploads/processed/*
+!server/uploads/original/.gitkeep
+!server/uploads/processed/.gitkeep
+
+# Package lock files (uncomment if you prefer not to commit these)
+# package-lock.json
+# yarn.lock
+
+# Optional: Generated API documentation
+/docs/
+
+# Optional: Testing artifacts
+/test-results/
