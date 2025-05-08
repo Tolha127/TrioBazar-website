@@ -25,9 +25,11 @@ app.use(securityHeaders); // Custom security headers for production
 
 // CORS configuration - more permissive for development
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://triobazar-client.onrender.com', 'https://triobazaar.com']
-    : ['http://localhost:3000', 'http://127.0.0.1:3000', '*'],
+  origin: process.env.CORS_ORIGINS 
+    ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
+    : process.env.NODE_ENV === 'production' 
+      ? ['https://triobazar-client.onrender.com', 'https://triobazaar.com', 'https://trio-bazar-website.vercel.app']
+      : ['http://localhost:3000', 'http://127.0.0.1:3000', '*'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   exposedHeaders: ['Content-Length', 'X-Requested-With', 'Authorization'],
