@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {  // State to track authenticatio
   // Check if token exists and is valid (not expired) on component mount
   useEffect(() => {
     checkAuthStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // Check authentication status
   const checkAuthStatus = async () => {
