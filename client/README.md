@@ -24,8 +24,8 @@ TrioBazar is a modern e-commerce platform that offers a variety of products. The
 
 ## Tech Stack
 
-- **Frontend Framework**: React 19
-- **Routing**: React Router DOM 7
+- **Frontend Framework**: React 18
+- **Routing**: React Router DOM 6
 - **Icons**: React Icons
 - **Styling**: CSS Modules and global styles
 - **State Management**: React Context API
@@ -35,7 +35,7 @@ TrioBazar is a modern e-commerce platform that offers a variety of products. The
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/TrioBazar-website.git
+
    ```
 2. Navigate to the client directory:
    ```
@@ -83,22 +83,9 @@ Ensure your code adheres to the project's coding standards.
 - `/src/utils` - Utility functions for common operations like formatting prices
 - `/src/services` - API service files for handling HTTP requests
 
-## Contributing
-
-We welcome contributions to improve the project. To contribute:
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add some amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request for review
-
-Please ensure your code follows the project's coding standards and includes appropriate tests.
-
 ## License
 
-This project is proprietary software. All rights reserved.\
-Unauthorized copying, distribution, or modification is prohibited.
+This project is licensed under the MIT License. Private project - not open for contributions.
 
-For inquiries about licensing, please contact the project owner. TrioBazar Website - Client
+For inquiries about licensing, please contact the project owner.
 
